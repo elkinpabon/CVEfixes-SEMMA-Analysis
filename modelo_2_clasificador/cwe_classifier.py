@@ -35,21 +35,13 @@ if not os.path.exists(dataset_path):
     print(f"ERROR: Dataset no encontrado en {dataset_path}")
     exit(1)
 
-print(f"Cargando dataset desde: {dataset_path}")
 df = pd.read_csv(dataset_path)
-print(f"Total registros: {len(df):,}")
-
 df_vuln = df[df['vulnerable'] == 1].copy()
+
+print(f"Total registros cargados: {len(df):,}")
 print(f"Registros vulnerables: {len(df_vuln):,}")
 print(f"Tipos CWE originales: {df_vuln['tipo_vulnerabilidad'].nunique()}")
-
-print(f"\nDistribucion de CWE (top 10):")
-cwe_counts = df_vuln['tipo_vulnerabilidad'].value_counts().head(10)
-for cwe, count in cwe_counts.items():
-    pct = (count / len(df_vuln)) * 100
-    print(f"  - {cwe}: {count} ({pct:.1f}%)")
-
-print("\nFASE 1 completada")
+print("FASE 1 completada")
 
 
 # ================================================================================
@@ -89,20 +81,13 @@ def normalize_cwe(cwe_text):
     
     return cwe_text
 
-print("\nConsolidando CWEs (937 tipos -> 10 categorias)...")
 df_vuln['cwe_normalizada'] = df_vuln['tipo_vulnerabilidad'].apply(normalize_cwe)
 
 cwe_dist = df_vuln['cwe_normalizada'].value_counts()
-print(f"Categorias CWE consolidadas:")
-for cwe, count in cwe_dist.items():
-    pct = (count / len(df_vuln)) * 100
-    print(f"  - {cwe}: {count} ({pct:.1f}%)")
+print(f"CWE Categories consolidadas: {len(cwe_dist)}")
+print(f"Longitud promedio código: {df_vuln['codigo'].str.len().mean():.0f} caracteres")
 
-print(f"\nLongitud promedio codigo: {df_vuln['codigo'].str.len().mean():.0f} caracteres")
-print(f"Minimo: {df_vuln['codigo'].str.len().min()}")
-print(f"Maximo: {df_vuln['codigo'].str.len().max()}")
-
-print("\nFASE 2 completada")
+print("FASE 2 completada")
 
 
 # ================================================================================
@@ -113,14 +98,9 @@ print("\n[FASE 3: MODIFY]")
 print("-" * 80)
 print("Objetivo: Preparar features consolidadas para el modelo")
 
-min_samples_per_class = 10
+df_filtered = df_vuln.copy()
 
-cwe_counts = df_vuln['cwe_normalizada'].value_counts()
-valid_cwes = cwe_counts[cwe_counts >= min_samples_per_class].index.tolist()
-df_filtered = df_vuln[df_vuln['cwe_normalizada'].isin(valid_cwes)].copy()
-
-print(f"\nFiltrando clases con >= {min_samples_per_class} muestras...")
-print(f"Clases CWE validas: {len(valid_cwes)}")
+print(f"\nUsando todos los datos disponibles")
 print(f"Muestras finales: {len(df_filtered):,}")
 
 print(f"\nFeature Engineering (TF-IDF):")
@@ -147,23 +127,28 @@ print(f"\nTarget Encoding:")
 cwe_encoder = LabelEncoder()
 y = df_filtered['cwe_normalizada'].values
 y_encoded = cwe_encoder.fit_transform(y)
-print(f"  - Clases CWE unicas: {len(cwe_encoder.classes_)}")
-for idx, cwe_name in enumerate(cwe_encoder.classes_):
-    count = (y_encoded == idx).sum()
-    print(f"    {idx+1}. {cwe_name}: {count}")
+
+# Filtrar clases con menos de 2 muestras para stratify
+cwe_counts = np.bincount(y_encoded)
+valid_classes = np.where(cwe_counts >= 2)[0]
+valid_mask = np.isin(y_encoded, valid_classes)
+X_tfidf_filtered = X_tfidf[valid_mask]
+y_encoded_filtered = y_encoded[valid_mask]
+
+print(f"  - Clases CWE originales: {len(cwe_encoder.classes_)}")
+print(f"  - Clases con >=2 muestras: {len(valid_classes)}")
+print(f"  - Muestras finales: {len(y_encoded_filtered)}")
 
 print(f"\nDividiendo en train/test (80/20, stratified)...")
 X_train, X_test, y_train, y_test = train_test_split(
-    X_tfidf, y_encoded,
+    X_tfidf_filtered, y_encoded_filtered,
     test_size=0.2,
     random_state=42,
-    stratify=y_encoded
+    stratify=y_encoded_filtered
 )
 
 print(f"  - Train: {X_train.shape[0]:,} muestras")
 print(f"  - Test: {X_test.shape[0]:,} muestras")
-print(f"  - Train class distribution: {np.bincount(y_train)}")
-print(f"  - Test class distribution: {np.bincount(y_test)}")
 
 print(f"\nCalculando class weights para balance...")
 class_weights = compute_class_weight(
@@ -171,7 +156,7 @@ class_weights = compute_class_weight(
     classes=np.unique(y_train),
     y=y_train
 )
-class_weight_dict = dict(enumerate(class_weights))
+class_weight_dict = {cls: weight for cls, weight in zip(np.unique(y_train), class_weights)}
 print(f"  - Pesos calculados: {len(class_weight_dict)} clases")
 
 print("\nFASE 3 completada")
@@ -263,9 +248,12 @@ else:
     print(f"  - Estado: MODERADO (overfitting presente)")
 
 print(f"\nREPORTE DE CLASIFICACION (TEST):")
+all_labels = np.unique(np.concatenate([y_test, y_pred_test]))
+target_names_filtered = cwe_encoder.classes_[all_labels]
 print(classification_report(
     y_test, y_pred_test,
-    target_names=cwe_encoder.classes_,
+    labels=all_labels,
+    target_names=target_names_filtered,
     zero_division=0
 ))
 
