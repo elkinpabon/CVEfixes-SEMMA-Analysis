@@ -1,0 +1,33 @@
+CWE CLASSIFIER - METRICAS FINALES
+============================================================
+
+DATASET:
+  Muestras vulnerables originales: 4,656
+  Muestras procesadas: 3,715
+  Train: 2,972
+  Test: 743
+
+PERFORMANCE (TEST SET):
+  Accuracy:  0.8694
+  Precision: 0.8783
+  Recall:    0.8694
+  F1-Score:  0.8704
+  K-Fold CV: 0.8762 (+/- 0.0060)
+
+CONFIGURACION:
+  Algoritmo: RandomForestClassifier
+  N estimators: 250
+  Max depth: 15
+  Features: 1200 TF-IDF (trigramas)
+
+CATEGORIAS CWE:
+  1. Buffer Overflow: 1350
+  2. Code Injection: 583
+  3. Cross-Site Scripting (XSS): 219
+  4. Format String Attack: 32
+  5. Improper Input Validation: 148
+  6. Insecure Deserialization: 184
+  7. Memory Management Issues: 163
+  8. Null Pointer / Null Safety: 366
+  9. SQL Injection: 634
+  10. Uninitialized Variables: 36

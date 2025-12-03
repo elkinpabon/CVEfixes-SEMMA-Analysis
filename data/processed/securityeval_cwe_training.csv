@@ -1,0 +1,122 @@
+codigo,cwe
+import sqlite3; conn = sqlite3.connect('db.db'); c = conn.cursor(); c.execute(f'SELECT * FROM users WHERE id={user_id}'),CWE-89
+"from flask import Flask, request; app.route('/search'); search_term = request.args.get('q'); html = f'<h1>{search_term}</h1>'; return html",CWE-79
+import os; cmd = input('Command: '); os.system(cmd),CWE-20
+import os; path = input('File: '); open(f'uploads/{path}').read(),CWE-78
+user_id = request.args.get('id'); pickle.loads(base64.b64decode(user_id)),CWE-22
+password = request.args.get('password'); db.save(password),CWE-352
+file = request.files['file']; file.save(f'uploads/{file.filename}'),CWE-434
+response = requests.get(user_url); return response.text,CWE-502
+exec(user_code),CWE-532
+import sqlite3; conn = sqlite3.connect('db.db'); c = conn.cursor(); c.execute(f'SELECT * FROM users WHERE id={user_id}'),CWE-89
+"from flask import Flask, request; app.route('/search'); search_term = request.args.get('q'); html = f'<h1>{search_term}</h1>'; return html",CWE-79
+import os; cmd = input('Command: '); os.system(cmd),CWE-20
+import os; path = input('File: '); open(f'uploads/{path}').read(),CWE-78
+user_id = request.args.get('id'); pickle.loads(base64.b64decode(user_id)),CWE-22
+password = request.args.get('password'); db.save(password),CWE-352
+file = request.files['file']; file.save(f'uploads/{file.filename}'),CWE-434
+response = requests.get(user_url); return response.text,CWE-502
+exec(user_code),CWE-532
+import sqlite3; conn = sqlite3.connect('db.db'); c = conn.cursor(); c.execute(f'SELECT * FROM users WHERE id={user_id}'),CWE-89
+"from flask import Flask, request; app.route('/search'); search_term = request.args.get('q'); html = f'<h1>{search_term}</h1>'; return html",CWE-79
+import os; cmd = input('Command: '); os.system(cmd),CWE-20
+import os; path = input('File: '); open(f'uploads/{path}').read(),CWE-78
+user_id = request.args.get('id'); pickle.loads(base64.b64decode(user_id)),CWE-22
+password = request.args.get('password'); db.save(password),CWE-352
+file = request.files['file']; file.save(f'uploads/{file.filename}'),CWE-434
+response = requests.get(user_url); return response.text,CWE-502
+exec(user_code),CWE-532
+import sqlite3; conn = sqlite3.connect('db.db'); c = conn.cursor(); c.execute(f'SELECT * FROM users WHERE id={user_id}'),CWE-89
+"from flask import Flask, request; app.route('/search'); search_term = request.args.get('q'); html = f'<h1>{search_term}</h1>'; return html",CWE-79
+import os; cmd = input('Command: '); os.system(cmd),CWE-20
+import os; path = input('File: '); open(f'uploads/{path}').read(),CWE-78
+user_id = request.args.get('id'); pickle.loads(base64.b64decode(user_id)),CWE-22
+password = request.args.get('password'); db.save(password),CWE-352
+file = request.files['file']; file.save(f'uploads/{file.filename}'),CWE-434
+response = requests.get(user_url); return response.text,CWE-502
+exec(user_code),CWE-532
+import sqlite3; conn = sqlite3.connect('db.db'); c = conn.cursor(); c.execute(f'SELECT * FROM users WHERE id={user_id}'),CWE-89
+"from flask import Flask, request; app.route('/search'); search_term = request.args.get('q'); html = f'<h1>{search_term}</h1>'; return html",CWE-79
+import os; cmd = input('Command: '); os.system(cmd),CWE-20
+import os; path = input('File: '); open(f'uploads/{path}').read(),CWE-78
+user_id = request.args.get('id'); pickle.loads(base64.b64decode(user_id)),CWE-22
+password = request.args.get('password'); db.save(password),CWE-352
+file = request.files['file']; file.save(f'uploads/{file.filename}'),CWE-434
+response = requests.get(user_url); return response.text,CWE-502
+exec(user_code),CWE-532
+import sqlite3; conn = sqlite3.connect('db.db'); c = conn.cursor(); c.execute(f'SELECT * FROM users WHERE id={user_id}'),CWE-89
+"from flask import Flask, request; app.route('/search'); search_term = request.args.get('q'); html = f'<h1>{search_term}</h1>'; return html",CWE-79
+import os; cmd = input('Command: '); os.system(cmd),CWE-20
+import os; path = input('File: '); open(f'uploads/{path}').read(),CWE-78
+user_id = request.args.get('id'); pickle.loads(base64.b64decode(user_id)),CWE-22
+password = request.args.get('password'); db.save(password),CWE-352
+file = request.files['file']; file.save(f'uploads/{file.filename}'),CWE-434
+response = requests.get(user_url); return response.text,CWE-502
+exec(user_code),CWE-532
+import sqlite3; conn = sqlite3.connect('db.db'); c = conn.cursor(); c.execute(f'SELECT * FROM users WHERE id={user_id}'),CWE-89
+"from flask import Flask, request; app.route('/search'); search_term = request.args.get('q'); html = f'<h1>{search_term}</h1>'; return html",CWE-79
+import os; cmd = input('Command: '); os.system(cmd),CWE-20
+import os; path = input('File: '); open(f'uploads/{path}').read(),CWE-78
+user_id = request.args.get('id'); pickle.loads(base64.b64decode(user_id)),CWE-22
+password = request.args.get('password'); db.save(password),CWE-352
+file = request.files['file']; file.save(f'uploads/{file.filename}'),CWE-434
+response = requests.get(user_url); return response.text,CWE-502
+exec(user_code),CWE-532
+import sqlite3; conn = sqlite3.connect('db.db'); c = conn.cursor(); c.execute(f'SELECT * FROM users WHERE id={user_id}'),CWE-89
+"from flask import Flask, request; app.route('/search'); search_term = request.args.get('q'); html = f'<h1>{search_term}</h1>'; return html",CWE-79
+import os; cmd = input('Command: '); os.system(cmd),CWE-20
+import os; path = input('File: '); open(f'uploads/{path}').read(),CWE-78
+user_id = request.args.get('id'); pickle.loads(base64.b64decode(user_id)),CWE-22
+password = request.args.get('password'); db.save(password),CWE-352
+file = request.files['file']; file.save(f'uploads/{file.filename}'),CWE-434
+response = requests.get(user_url); return response.text,CWE-502
+exec(user_code),CWE-532
+import sqlite3; conn = sqlite3.connect('db.db'); c = conn.cursor(); c.execute(f'SELECT * FROM users WHERE id={user_id}'),CWE-89
+"from flask import Flask, request; app.route('/search'); search_term = request.args.get('q'); html = f'<h1>{search_term}</h1>'; return html",CWE-79
+import os; cmd = input('Command: '); os.system(cmd),CWE-20
+import os; path = input('File: '); open(f'uploads/{path}').read(),CWE-78
+user_id = request.args.get('id'); pickle.loads(base64.b64decode(user_id)),CWE-22
+password = request.args.get('password'); db.save(password),CWE-352
+file = request.files['file']; file.save(f'uploads/{file.filename}'),CWE-434
+response = requests.get(user_url); return response.text,CWE-502
+exec(user_code),CWE-532
+import sqlite3; conn = sqlite3.connect('db.db'); c = conn.cursor(); c.execute(f'SELECT * FROM users WHERE id={user_id}'),CWE-89
+"from flask import Flask, request; app.route('/search'); search_term = request.args.get('q'); html = f'<h1>{search_term}</h1>'; return html",CWE-79
+import os; cmd = input('Command: '); os.system(cmd),CWE-20
+import os; path = input('File: '); open(f'uploads/{path}').read(),CWE-78
+user_id = request.args.get('id'); pickle.loads(base64.b64decode(user_id)),CWE-22
+password = request.args.get('password'); db.save(password),CWE-352
+file = request.files['file']; file.save(f'uploads/{file.filename}'),CWE-434
+response = requests.get(user_url); return response.text,CWE-502
+exec(user_code),CWE-532
+import sqlite3; conn = sqlite3.connect('db.db'); c = conn.cursor(); c.execute(f'SELECT * FROM users WHERE id={user_id}'),CWE-89
+"from flask import Flask, request; app.route('/search'); search_term = request.args.get('q'); html = f'<h1>{search_term}</h1>'; return html",CWE-79
+import os; cmd = input('Command: '); os.system(cmd),CWE-20
+import os; path = input('File: '); open(f'uploads/{path}').read(),CWE-78
+user_id = request.args.get('id'); pickle.loads(base64.b64decode(user_id)),CWE-22
+password = request.args.get('password'); db.save(password),CWE-352
+file = request.files['file']; file.save(f'uploads/{file.filename}'),CWE-434
+response = requests.get(user_url); return response.text,CWE-502
+exec(user_code),CWE-532
+import sqlite3; conn = sqlite3.connect('db.db'); c = conn.cursor(); c.execute(f'SELECT * FROM users WHERE id={user_id}'),CWE-89
+"from flask import Flask, request; app.route('/search'); search_term = request.args.get('q'); html = f'<h1>{search_term}</h1>'; return html",CWE-79
+import os; cmd = input('Command: '); os.system(cmd),CWE-20
+import os; path = input('File: '); open(f'uploads/{path}').read(),CWE-78
+user_id = request.args.get('id'); pickle.loads(base64.b64decode(user_id)),CWE-22
+password = request.args.get('password'); db.save(password),CWE-352
+file = request.files['file']; file.save(f'uploads/{file.filename}'),CWE-434
+response = requests.get(user_url); return response.text,CWE-502
+exec(user_code),CWE-532
+import sqlite3; conn = sqlite3.connect('db.db'); c = conn.cursor(); c.execute(f'SELECT * FROM users WHERE id={user_id}'),CWE-89
+"from flask import Flask, request; app.route('/search'); search_term = request.args.get('q'); html = f'<h1>{search_term}</h1>'; return html",CWE-79
+import os; cmd = input('Command: '); os.system(cmd),CWE-20
+import os; path = input('File: '); open(f'uploads/{path}').read(),CWE-78
+user_id = request.args.get('id'); pickle.loads(base64.b64decode(user_id)),CWE-22
+password = request.args.get('password'); db.save(password),CWE-352
+file = request.files['file']; file.save(f'uploads/{file.filename}'),CWE-434
+response = requests.get(user_url); return response.text,CWE-502
+exec(user_code),CWE-532
+import sqlite3; conn = sqlite3.connect('db.db'); c = conn.cursor(); c.execute(f'SELECT * FROM users WHERE id={user_id}'),CWE-89
+"from flask import Flask, request; app.route('/search'); search_term = request.args.get('q'); html = f'<h1>{search_term}</h1>'; return html",CWE-79
+import os; cmd = input('Command: '); os.system(cmd),CWE-20
+import os; path = input('File: '); open(f'uploads/{path}').read(),CWE-78
