@@ -99,7 +99,66 @@ modelo_2_clasificador/
 
 ## Uso
 
-### Opcion 1: Ejecutar modelos directamente
+### Opcion 1: API Flask (RECOMENDADO) ⭐
+
+```bash
+cd backend
+pip install -r requirements.txt
+python app.py
+```
+
+Luego accede a `http://localhost:5000/info`
+
+**Endpoints disponibles**:
+- `POST /analyze` - Análisis completo (detectar + clasificar)
+- `POST /detect` - Solo detección binaria
+- `POST /classify` - Solo clasificación CWE
+- `GET /languages` - Lenguajes soportados
+- `GET /cwe-types` - Tipos de vulnerabilidad
+- `GET /health` - Verificar salud de la API
+
+**Ejemplo con curl**:
+```bash
+curl -X POST http://localhost:5000/analyze \
+  -H "Content-Type: application/json" \
+  -d '{
+    "codigo": "char buffer[10]; strcpy(buffer, user_input);",
+    "lenguaje": "C++"
+  }'
+```
+
+**Respuesta**:
+```json
+{
+  "deteccion": {
+    "vulnerable": 1,
+    "confianza": 0.87,
+    "probabilidades": {
+      "seguro": 0.13,
+      "vulnerable": 0.87
+    }
+  },
+  "clasificacion": {
+    "tipo_vulnerabilidad": "Buffer Overflow",
+    "confianza": 0.92,
+    "top_3_tipos": [
+      ["Buffer Overflow", 0.92],
+      ["SQL Injection", 0.03],
+      ["Code Injection", 0.02]
+    ]
+  },
+  "resumen": "⚠️ Código VULNERABLE detectado como 'Buffer Overflow' (87.0% confianza)"
+}
+```
+
+**Cliente Python incluido**:
+```bash
+python backend/client.py
+```
+
+Ver más en: [backend/README.md](backend/README.md)
+
+### Opcion 2: Ejecutar modelos directamente
 
 ```bash
 cd modelo_1_detector
@@ -114,7 +173,7 @@ python cwe_classifier.py
 - Metricas de rendimiento en test set
 - Artefactos guardados (.pkl) en models/
 
-### Opcion 2: Usar modelos entrenados en Python
+### Opcion 3: Usar modelos entrenados en Python
 
 ```python
 import pickle
@@ -255,9 +314,10 @@ Ambos modelos siguen estrictamente la metodologia SEMMA dividida en 5 fases:
 
 ## Proximos pasos
 
-1. **API Flask**: Crear endpoint `/detect` para predicciones en tiempo real
+1. ✅ **API Flask**: Endpoints `/detect`, `/classify`, `/analyze` implementados
 2. **GitHub Actions**: Integrar con CI/CD para analizar PR automaticamente
 3. **Dashboard**: Visualizar metricas y performance en tiempo real
 4. **Optimizacion**: Experimentar con XGBoost, SVM, redes neuronales
 5. **Tuning**: Grid Search para optimizar hiperparametros
 6. **Versionado**: Guardar versiones de modelos para auditoria
+7. **SHAP**: Explicabilidad de predicciones
