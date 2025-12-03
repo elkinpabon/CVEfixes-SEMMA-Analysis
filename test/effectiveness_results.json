@@ -6,7 +6,7 @@
     "esperado": "seguro",
     "detectado": "vulnerable",
     "tipo": "SQL Injection",
-    "confianza": 0.6093554158317064,
+    "confianza": 0.6093554158317063,
     "exitoso": false
   },
   {
@@ -26,7 +26,7 @@
     "esperado": "seguro",
     "detectado": "seguro",
     "tipo": null,
-    "confianza": 0.6915925379918368,
+    "confianza": 0.6915925379918367,
     "exitoso": true
   },
   {
@@ -46,7 +46,7 @@
     "esperado": "seguro",
     "detectado": "seguro",
     "tipo": null,
-    "confianza": 0.6170277455641734,
+    "confianza": 0.6170277455641733,
     "exitoso": true
   },
   {
@@ -66,7 +66,7 @@
     "esperado": "vulnerable",
     "detectado": "vulnerable",
     "tipo": "Cross-Site Scripting (XSS)",
-    "confianza": 0.6163497779551689,
+    "confianza": 0.6163497779551688,
     "exitoso": true
   },
   {
@@ -76,7 +76,7 @@
     "esperado": "vulnerable",
     "detectado": "vulnerable",
     "tipo": "Improper Input Validation",
-    "confianza": 0.5586474627073252,
+    "confianza": 0.5586474627073251,
     "exitoso": true
   },
   {
@@ -86,7 +86,7 @@
     "esperado": "vulnerable",
     "detectado": "vulnerable",
     "tipo": "Improper Input Validation",
-    "confianza": 0.570433075935529,
+    "confianza": 0.5704330759355292,
     "exitoso": true
   },
   {
@@ -96,7 +96,7 @@
     "esperado": "vulnerable",
     "detectado": "vulnerable",
     "tipo": "Buffer Overflow",
-    "confianza": 0.6906998646280431,
+    "confianza": 0.6906998646280432,
     "exitoso": true
   }
 ]

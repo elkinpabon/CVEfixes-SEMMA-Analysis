@@ -124,19 +124,5 @@
     "exitoso": true,
     "tipo": "Improper Input Validation",
     "vulnerable": true
-  },
-  {
-    "nombre": "Math calculation",
-    "lenguaje": "python",
-    "exitoso": false,
-    "tipo": "Improper Input Validation",
-    "vulnerable": true
-  },
-  {
-    "nombre": "String validation",
-    "lenguaje": "python",
-    "exitoso": false,
-    "tipo": "Improper Input Validation",
-    "vulnerable": true
   }
 ]
