@@ -1,18 +1,15 @@
-# Vulnerability Detection Pipeline
+# Vulnerability Detection
 
 Sistema de deteccion de vulnerabilidades multilenguaje con arquitectura de dos etapas SEMMA.
 
-## 📊 Resumen Ejecutivo
+## 📊 Resumen
 
 **Evaluacion total en modelos**: **13,968 muestras de codigo**
 - Modelo 1 (Detector): 9,312 muestras
 - Modelo 2 (Clasificador): 4,656 muestras
 
-**Pipeline en produccion**:
 - **Modelo 1**: Deteccion binaria (79.01% accuracy, 90.12% recall)
 - **Modelo 2**: Clasificacion CWE multiclase (86.94% accuracy, 5-fold CV: 87.62%)
-
-**Estado de repositorio**: ✅ **13 commits** exitosos documentando toda la evolucion del proyecto
 
 ---
 
@@ -75,7 +72,7 @@ CVEfixes-SEMMA-Analysis/
 
 ---
 
-## 📊 Procedencia de datos
+## 📊 Datasets
 
 ### Modelo 1 - Dataset de deteccion binaria
 
@@ -85,7 +82,7 @@ CVEfixes-SEMMA-Analysis/
 | **Archivo** | `data/processed/cybernative_detector_training.csv` |
 | **Total muestras** | 9,312 |
 | **Distribucion** | 50% vulnerable (4,656) + 50% seguro (4,656) |
-| **Estado** | ✅ BALANCEADO PERFECTO |
+| **Estado** | ✅ BALANCEADO |
 | **Lenguajes** | 11 (distribucion ~9% cada uno) |
 | **Longitud promedio** | 461 caracteres (rango: 55-8,925) |
 | **Valores nulos** | 0 |
@@ -270,206 +267,6 @@ graph TD
 
 ---
 
-## 📈 Flujo de datos SEMMA por modelo
-
-### MODELO 1: Proceso SEMMA (Detector)
-
-```
-┌─────────────────────────────────────────────────────────────┐
-│ FASE 1: SAMPLE - Cargar 9,312 muestras                      │
-│ ├─ 4,656 vulnerable + 4,656 seguro                          │
-│ ├─ Balanceado perfecto (50/50)                              │
-│ ├─ 11 lenguajes (C++, Python, Java, ...)                    │
-│ └─ Status: ✅ LISTO                                          │
-└─────────────────────────────────────────────────────────────┘
-                           ↓
-┌─────────────────────────────────────────────────────────────┐
-│ FASE 2: EXPLORE - Analizar caracteristicas                  │
-│ ├─ Longitud promedio: 461 caracteres                        │
-│ ├─ Distribucion lenguajes: ~9.1% cada uno                   │
-│ ├─ Valores nulos: 0 (sin missing data)                      │
-│ ├─ Duplicados: 7 (removidos)                                │
-│ └─ Status: ✅ LISTO                                          │
-└─────────────────────────────────────────────────────────────┘
-                           ↓
-┌─────────────────────────────────────────────────────────────┐
-│ FASE 3: MODIFY - Feature Engineering                        │
-│ ├─ Vectorizacion TF-IDF                                     │
-│ │  └─ 1,000 features (unigramas + bigramas)                │
-│ ├─ Language encoding                                        │
-│ │  └─ 1 feature numerico (11 lenguajes)                    │
-│ ├─ Total features: 1,001                                    │
-│ ├─ Train/Test split: 80/20 (7,449 / 1,863)                 │
-│ └─ Status: ✅ LISTO                                          │
-└─────────────────────────────────────────────────────────────┘
-                           ↓
-┌─────────────────────────────────────────────────────────────┐
-│ FASE 4: MODEL - Entrenar RandomForest                       │
-│ ├─ Algoritmo: RandomForestClassifier                        │
-│ ├─ N estimators: 200 arboles                                │
-│ ├─ Max depth: 25                                            │
-│ ├─ Min samples split: 5                                     │
-│ ├─ Tiempo: ~1 segundo (sin K-Fold)                          │
-│ └─ Status: ✅ ENTRENADO                                      │
-└─────────────────────────────────────────────────────────────┘
-                           ↓
-┌─────────────────────────────────────────────────────────────┐
-│ FASE 5: ASSESS - Evaluar performance                        │
-│ ├─ Train Accuracy: 85.81%                                   │
-│ ├─ Test Accuracy: 79.01% ⭐ PRINCIPAL                      │
-│ ├─ Precision: 73.73%                                        │
-│ ├─ Recall: 90.12% ⭐ CRITICO (minimiza falsos negativos)   │
-│ ├─ F1-Score: 81.10%                                         │
-│ ├─ ROC-AUC: 88.83%                                          │
-│ ├─ 5-Fold CV: 79.22% ± 0.26% (muy consistente)             │
-│ ├─ Overfitting: 6.80% (ACEPTABLE)                           │
-│ ├─ K-Fold execution: ~5.5 segundos (5 folds)                │
-│ ├─ Confusion Matrix:                                        │
-│ │  ├─ TN: 633 (verdaderos negativos)                       │
-│ │  ├─ FP: 299 (falsos positivos)                           │
-│ │  ├─ FN: 92 (falsos negativos - CRITICO)                  │
-│ │  └─ TP: 839 (verdaderos positivos)                       │
-│ └─ Status: ✅ VALIDADO Y GUARDADO                            │
-└─────────────────────────────────────────────────────────────┘
-```
-
-### MODELO 2: Proceso SEMMA (Clasificador)
-
-```
-┌─────────────────────────────────────────────────────────────┐
-│ FASE 1: SAMPLE - Cargar 4,656 muestras vulnerables          │
-│ ├─ Solo codigo vulnerable (filtrado de Modelo 1)           │
-│ ├─ 937 tipos CWE originales                                │
-│ ├─ 11 lenguajes                                            │
-│ └─ Status: ✅ LISTO                                          │
-└─────────────────────────────────────────────────────────────┘
-                           ↓
-┌─────────────────────────────────────────────────────────────┐
-│ FASE 2: EXPLORE - Consolidar tipos CWE                      │
-│ ├─ Normalizar nombres CWE                                  │
-│ ├─ Consolidar categorias similares                         │
-│ ├─ 937 tipos → 10 categorias principales                   │
-│ ├─ Ejemplo: CWE-120, 121, 122 → "Buffer Overflow"         │
-│ └─ Status: ✅ LISTO                                          │
-└─────────────────────────────────────────────────────────────┘
-                           ↓
-┌─────────────────────────────────────────────────────────────┐
-│ FASE 3: MODIFY - Filtrar y Feature Engineering              │
-│ ├─ Filtrar clases con <2 muestras                          │
-│ ├─ 4,656 → 3,715 muestras (916 removidas)                  │
-│ ├─ Clases finales: 21                                      │
-│ ├─ Vectorizacion TF-IDF                                    │
-│ │  └─ 1,200 features (unigramas + bigramas + trigramas)   │
-│ ├─ Total features: 1,200                                   │
-│ ├─ Train/Test split: 80/20 (2,972 / 743)                   │
-│ └─ Status: ✅ LISTO                                          │
-└─────────────────────────────────────────────────────────────┘
-                           ↓
-┌─────────────────────────────────────────────────────────────┐
-│ FASE 4: MODEL - Entrenar RandomForest + K-Fold             │
-│ ├─ Algoritmo: RandomForestClassifier                        │
-│ ├─ N estimators: 250 arboles                                │
-│ ├─ Max depth: 15                                            │
-│ ├─ Min samples split: 2                                     │
-│ ├─ Class weight: balanced (ajusta desbalance)               │
-│ ├─ Estrategia: StratifiedKFold (5 folds)                   │
-│ ├─ Tiempo: ~20 segundos (5 folds + entrenamiento)          │
-│ └─ Status: ✅ ENTRENADO                                      │
-└─────────────────────────────────────────────────────────────┘
-                           ↓
-┌─────────────────────────────────────────────────────────────┐
-│ FASE 5: ASSESS - Evaluar performance                        │
-│ ├─ Train Accuracy: 91.64%                                   │
-│ ├─ Test Accuracy: 86.94% ⭐ PRINCIPAL                      │
-│ ├─ Precision (avg): 87.83%                                  │
-│ ├─ Recall (avg): 86.94%                                     │
-│ ├─ F1-Score: 87.04%                                         │
-│ ├─ 5-Fold CV: 87.62% ± 0.60% (muy consistente)             │
-│ ├─ Overfitting: 5.28% (BAJO - EXCELENTE)                   │
-│ ├─ Clases evaluadas: 10 principales + 11 minoritarias      │
-│ ├─ Confusion Matrix: Por cada una de las 21 clases         │
-│ └─ Status: ✅ VALIDADO Y GUARDADO                            │
-└─────────────────────────────────────────────────────────────┘
-```
-
----
-
-## 📝 Commits en repositorio (13 commits)
-
-```
-Commit 13: Add K-Fold cross-validation to Modelo 1
-├─ Agregadas importaciones: cross_val_score, StratifiedKFold
-├─ Fase 5 ASSESS ahora incluye validacion 5-fold
-└─ Resultados: 79.22% ± 0.26% (consistencia perfecta)
-
-Commit 12: Fix Modelo 2 classification_report target names
-├─ Solucion: Usar labels presentes en y_test y y_pred_test
-├─ Evita mismatch entre 937 clases en encoder vs 21 en datos
-└─ Metricas: Precision 87.83%, Recall 86.94%
-
-Commit 11: Filter stratify-incompatible classes in Modelo 2
-├─ Problema: "least populated class has only 1 member"
-├─ Solucion: Filtrar clases con <2 muestras
-├─ Resultado: 4,656 → 3,740 muestras validas
-└─ Permitio entrenamiento exitoso con StratifiedKFold
-
-Commit 10: Fix class_weight_dict mapping in Modelo 2
-├─ Problema: Class indices no coincidian con dict keys
-├─ Cambio: dict(enumerate(...)) → {cls: weight for cls, weight...}
-├─ Resultado: Correcto mapeo de clases a pesos
-└─ Metricas: Train accuracy 91.64%
-
-Commit 9: Remove excessive Modelo 2 output in Fase 1
-├─ Antes: Printear distribucion completa de 937 CWEs
-├─ Despues: Solo mostrar resumen de totales
-├─ Beneficio: Output mas limpio y legible
-
-Commit 8: Remove Modelo 2 Fase 2 dataset printing
-├─ Antes: Loop mostrando todos los 937 tipos CWE
-├─ Despues: Solo resumen de consolidacion
-├─ Beneficio: Mejor performance del script
-
-Commit 7: Fix unicode encoding issues on Windows
-├─ Reemplazo de emojis por ASCII tags
-├─ Formato de salida normalizado
-└─ Compatibilidad total con PowerShell
-
-Commit 6: Create effectiveness_test.py
-├─ 10 tests (5 seguro + 5 vulnerable)
-├─ Cobertura: Python, JavaScript, Java, PHP, C++
-└─ Resultado: 80% effectiveness
-
-Commit 5: Create samples.py with 38 real-world examples
-├─ Ejemplos vulnerables y seguros
-├─ Cobertura de 11 lenguajes
-└─ Util para validacion manual
-
-Commit 4: Refactor backend to production-ready
-├─ Deshabilitado debug mode
-├─ Removido verbose output
-├─ Production configuration
-└─ API endpoints: /detect, /classify, /analyze
-
-Commit 3: Fix HTTP validation in test suite
-├─ Validacion correcta de status codes
-├─ Manejo de errores mejorado
-└─ 18 tests finales
-
-Commit 2: Fix language format mismatches
-├─ Normalizacion a lowercase
-├─ Consistencia en encodeo
-└─ Test pass rate: 85%
-
-Commit 1: Initial project setup with 2-stage pipeline
-├─ Modelo 1: Detector binario (79.01% accuracy)
-├─ Modelo 2: Clasificador CWE (86.94% accuracy)
-└─ Dataset integration y feature engineering
-
-Total commits: 13 | Cambios: 450+ lineas de codigo | Estado: ✅ COMPLETO
-```
-
----
-
 ## 🚀 Como usar
 
 ### Opcion 1: API Flask (RECOMENDADO) ⭐
@@ -636,27 +433,3 @@ python samples.py               # 38 ejemplos (11 lenguajes)
 ```
 
 ---
-
-## 🚀 Proximos pasos
-
-1. ✅ **API Flask productiva**: REST endpoints implementados
-2. ✅ **SEMMA completo en ambos modelos**: 5 fases + K-Fold
-3. ✅ **Test infrastructure**: 28 tests automatizados
-4. ⏳ **GitHub Actions CI/CD**: Automatizar analisis en PR
-5. ⏳ **Dashboard web**: Visualizar metricas en tiempo real
-6. ⏳ **SHAP explicabilidad**: Explicar que tokens activaron prediccion
-7. ⏳ **Ensemble methods**: Combinar XGBoost, SVM, Redes neuronales
-8. ⏳ **Grid Search optimization**: Tuning automatico de hiperparametros
-9. ⏳ **Model versioning**: Guardar historial de versiones para auditoria
-
----
-
-## 📄 Licencia
-
-Consulta [LICENSE](LICENSE) para mas informacion.
-
----
-
-**Ultima actualizacion**: 3 de diciembre de 2025  
-**Estado**: ✅ Produccion - 13 commits, 2 modelos operativos, 13,968 muestras evaluadas  
-**Responsable**: elkinpabon
