@@ -1,0 +1,72 @@
+codigo,lenguaje,vulnerable,tipo_vulnerabilidad,linea_vulnerable,descripcion,fix
+"def search_user(name):
+    query = ""SELECT * FROM users WHERE name = '"" + name + ""'""
+    return db.execute(query)",python,1,SQL_INJECTION,2.0,Concatenación de string en query SQL,"def search_user(name):
+    query = ""SELECT * FROM users WHERE name = %s""
+    return db.execute(query, [name])"
+"query = ""SELECT id FROM accounts WHERE user = '"" + request.args['user'] + ""'""",python,1,SQL_INJECTION,1.0,SQL injection a través de query parameters,"query = ""SELECT id FROM accounts WHERE user = %s"""
+"sql = f""SELECT * FROM products WHERE id = {user_id}""",python,1,SQL_INJECTION,1.0,f-string inseguro en query SQL,"sql = f""SELECT * FROM products WHERE id = %s"""
+"execute(""SELECT * FROM users WHERE email = '"" + email + ""'"")",python,1,SQL_INJECTION,1.0,Construcción dinámica sin prepared statements,"execute(""SELECT * FROM users WHERE email = %s"", [email])"
+"import os
+os.system(f'ffmpeg -i {input_file} output.mp4')",python,1,COMMAND_INJECTION,2.0,Command injection con f-string,"import os
+os.system(['ffmpeg', '-i', input_file, 'output.mp4'])"
+"subprocess.run(f'convert {filename}', shell=True)",python,1,COMMAND_INJECTION,1.0,shell=True permite command injection,"subprocess.run(['convert', filename], shell=False)"
+popen(f'cat {filepath}'),python,1,COMMAND_INJECTION,1.0,popen con entrada del usuario,"popen(['cat', filepath])"
+"def read_file(filepath):
+    return open(request.args['file']).read()",python,1,PATH_TRAVERSAL,2.0,Path traversal permitido en parámetro,"def read_file(filepath):
+    filepath = os.path.normpath(os.path.join('/safe_dir', filepath))
+    return open(filepath).read()"
+"file_path = os.path.join('/uploads', request.files['upload'].filename)",python,1,PATH_TRAVERSAL,1.0,Filename del usuario sin validación,safe_filename = secure_filename(request.files['upload'].filename)
+file_content = open('/data/' + user_input).read(),python,1,PATH_TRAVERSAL,1.0,Concatenación de path con entrada,"file_path = os.path.abspath(os.path.join('/data', user_input))
+if not file_path.startswith('/data/'):
+    raise ValueError('Invalid path')"
+"import pickle
+data = pickle.loads(user_input)",python,1,INSECURE_DESERIALIZATION,2.0,pickle.loads desserializa código arbitrario,"import pickle
+data = pickle.loads(user_input, strict_types=True)"
+"import yaml
+config = yaml.load(request.data)",python,1,INSECURE_DESERIALIZATION,2.0,yaml.load sin Loader puede ejecutar código,"import yaml
+config = yaml.safe_load(request.data)"
+eval(user_code),python,1,INSECURE_DESERIALIZATION,1.0,eval ejecuta código arbitrario,ast.literal_eval(user_code)
+"function showComment(comment) {
+    document.getElementById('comments').innerHTML = comment;
+}",javascript,1,XSS,2.0,innerHTML con entrada del usuario,"function showComment(comment) {
+    document.getElementById('comments').textContent = comment;
+}"
+"const html = '<p>' + userInput + '</p>';
+$('#content').html(html);",javascript,1,XSS,1.0,jQuery html() con entrada sin sanitizar,"const text = document.createTextNode(userInput);
+$('#content').append(text);"
+element.innerHTML = request.query.content;,javascript,1,XSS,1.0,innerHTML con parámetro de request,element.textContent = request.query.content;
+"const template = `<div>${userComment}</div>`;
+document.body.innerHTML += template;",javascript,1,XSS,2.0,Template literal con innerHTML,"const template = document.createElement('div');
+template.textContent = userComment;
+document.body.appendChild(template);"
+"const child = require('child_process');
+child.exec(`convert ${filename}`);",javascript,1,COMMAND_INJECTION,2.0,exec con template string,"const child = require('child_process');
+child.spawn('convert', [filename]);"
+"const { execSync } = require('child_process');
+execSync(`ffmpeg -i ${input}`);",javascript,1,COMMAND_INJECTION,2.0,execSync con entrada del usuario,"const { spawnSync } = require('child_process');
+spawnSync('ffmpeg', ['-i', input]);"
+"def search_user(user_id):
+    query = 'SELECT * FROM users WHERE id = %s'
+    return db.execute(query, [user_id])",python,0,,,Prepared statement seguro,
+"def read_safe_file(filename):
+    safe_path = os.path.abspath(os.path.join('/data', filename))
+    if not safe_path.startswith('/data/'):
+        raise ValueError('Invalid path')
+    return open(safe_path).read()",python,0,,,Path traversal validado,
+"import subprocess
+result = subprocess.run(['grep', pattern, filename], capture_output=True)",python,0,,,subprocess con array (seguro),
+"from flask import escape
+html = escape(user_input)
+return f'<p>{html}</p>'",python,0,,,HTML escapado correctamente,
+"function showComment(comment) {
+    const el = document.createElement('p');
+    el.textContent = comment;
+    document.getElementById('comments').appendChild(el);
+}",javascript,0,,,Uso de textContent (XSS seguro),
+"const sanitized = DOMPurify.sanitize(userInput);
+document.getElementById('content').innerHTML = sanitized;",javascript,0,,,DOMPurify para sanitizar HTML,
+"const { spawn } = require('child_process');
+const result = spawn('ls', [directory]);",javascript,0,,,spawn en lugar de exec,
+"const safe = encodeURIComponent(userInput);
+window.location.href = `/search?q=${safe}`;",javascript,0,,,URL encoding para parámetros,
